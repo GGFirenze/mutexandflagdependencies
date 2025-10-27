@@ -1,0 +1,2557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TheFork - Demo</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍴</text></svg>">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        .header {
+            background: white;
+            padding: 12px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 24px;
+            font-weight: bold;
+            color: #2d7d32;
+            text-decoration: none;
+        }
+
+        .logo::before {
+            content: "🍴";
+            margin-right: 8px;
+        }
+
+        .header-links {
+            display: flex;
+            gap: 24px;
+            align-items: center;
+        }
+
+        .header-link {
+            color: #666;
+            text-decoration: none;
+            font-size: 14px;
+            padding: 8px 16px;
+            transition: color 0.3s;
+        }
+
+        .header-link:hover {
+            color: #2d7d32;
+        }
+
+        .btn-primary {
+            background: #2d7d32;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 24px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: background 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-primary:hover {
+            background: #1b5e20;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #2d7d32 0%, #4caf50 100%);
+            color: white;
+            padding: 80px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-text h1 {
+            font-size: 48px;
+            font-weight: bold;
+            line-height: 1.2;
+            margin-bottom: 32px;
+        }
+
+        .search-form {
+            background: white;
+            border-radius: 32px;
+            padding: 8px;
+            display: flex;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            max-width: 600px;
+        }
+
+        .search-input {
+            flex: 1;
+            border: none;
+            padding: 16px 20px;
+            font-size: 16px;
+            outline: none;
+        }
+
+        .search-input:first-child {
+            border-radius: 24px 0 0 24px;
+        }
+
+        .search-btn {
+            background: #2d7d32;
+            color: white;
+            border: none;
+            padding: 16px 32px;
+            border-radius: 24px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .hero-image {
+            text-align: center;
+        }
+
+        .hero-image img {
+            max-width: 100%;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+        }
+
+        /* Festival Banner */
+        .festival-banner {
+            background: linear-gradient(45deg, #ff9800, #4caf50, #2196f3, #e91e63);
+            background-size: 400% 400%;
+            animation: gradientShift 8s ease infinite;
+            color: white;
+            padding: 40px 0;
+            margin: 40px 0;
+            border-radius: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .festival-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .festival-title {
+            font-size: 36px;
+            font-weight: bold;
+        }
+
+        .festival-offer {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .discount-badge {
+            background: #ff9800;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 50%;
+            font-size: 24px;
+            font-weight: bold;
+            width: 80px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Sections */
+        .section {
+            margin: 60px 0;
+        }
+
+        .section-header {
+            margin-bottom: 32px;
+        }
+
+        .section-title {
+            font-size: 32px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        /* Restaurant Grid */
+        .restaurant-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+        }
+
+        .restaurant-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .restaurant-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+        }
+
+        .restaurant-image {
+            height: 200px;
+            background: linear-gradient(45deg, #ff9800, #f44336);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .restaurant-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .restaurant-badge {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .favorite-btn {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            background: rgba(255,255,255,0.9);
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .favorite-btn:hover {
+            background: #ff4757;
+            color: white;
+        }
+
+        .restaurant-info {
+            padding: 20px;
+        }
+
+        .restaurant-name {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        .restaurant-details {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .rating {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .rating-score {
+            background: #4caf50;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .rating-count {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .restaurant-meta {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 12px;
+        }
+
+        .cuisine-type {
+            color: #2d7d32;
+            font-weight: 500;
+        }
+
+        .offers {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .offer-badge {
+            background: #1a237e;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 16px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .offer-badge.discount {
+            background: #e65100;
+        }
+
+        .offer-badge.yums {
+            background: #7b1fa2;
+        }
+
+        /* Cuisine Categories */
+        .cuisine-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 24px;
+            margin-top: 32px;
+        }
+
+        .cuisine-card {
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .cuisine-card:hover {
+            transform: scale(1.05);
+        }
+
+        .cuisine-image {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            margin: 0 auto 16px;
+            background: linear-gradient(45deg, #ff9800, #f44336);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+        }
+
+        .cuisine-name {
+            font-size: 16px;
+            font-weight: 500;
+            color: #333;
+        }
+
+        /* City Grid */
+        .city-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin: 32px 0;
+        }
+
+        .city-card {
+            background: linear-gradient(135deg, #1976d2, #42a5f5);
+            color: white;
+            padding: 40px 20px;
+            border-radius: 16px;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .city-card:hover {
+            transform: translateY(-4px);
+        }
+
+        .city-card h3 {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        /* Recommendation Cards */
+        .recommendation-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+        }
+
+        .recommendation-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .recommendation-image {
+            height: 200px;
+            background: linear-gradient(45deg, #2196f3, #21cbf3);
+            position: relative;
+        }
+
+        .recommendation-content {
+            padding: 24px;
+        }
+
+        .recommendation-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 12px;
+        }
+
+        .recommendation-text {
+            color: #666;
+            margin-bottom: 16px;
+        }
+
+        .btn-secondary {
+            color: #2d7d32;
+            text-decoration: none;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-secondary:after {
+            content: "→";
+        }
+
+        /* How it works */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 32px;
+        }
+
+        .feature-card {
+            text-align: center;
+            padding: 32px 24px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            background: #e8f5e8;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 32px;
+        }
+
+        .feature-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 12px;
+            color: #333;
+        }
+
+        .feature-text {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        /* Footer */
+        .footer {
+            background: #1a1a1a;
+            color: white;
+            padding: 60px 0 20px;
+            margin-top: 80px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: 1fr 2fr 1fr;
+            gap: 60px;
+            margin-bottom: 40px;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 20px;
+            font-size: 18px;
+        }
+
+        .footer-links {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .footer-links a {
+            color: #ccc;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        .app-downloads {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .app-download {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: #333;
+            padding: 12px;
+            border-radius: 8px;
+            color: white;
+            text-decoration: none;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid #333;
+            color: #999;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .social-link {
+            width: 40px;
+            height: 40px;
+            background: #333;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            transition: background 0.3s;
+        }
+
+        .social-link:hover {
+            background: #4caf50;
+        }
+
+        /* Login Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-panel {
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: 400px;
+            height: 100%;
+            background: white;
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+            overflow-y: auto;
+            box-shadow: -4px 0 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .modal-overlay.active .modal-panel {
+            transform: translateX(0);
+        }
+
+        .modal-close {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: #999;
+            cursor: pointer;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.3s;
+            z-index: 10;
+        }
+
+        .modal-close:hover {
+            background: #f0f0f0;
+            color: #333;
+        }
+
+        .modal-content {
+            padding: 60px 32px 32px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .modal-logo {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .modal-logo .logo {
+            color: #2d7d32;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .modal-form {
+            flex: 1;
+        }
+
+        .modal-title {
+            font-size: 20px;
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 24px;
+            text-align: center;
+        }
+
+        .login-form {
+            margin-bottom: 24px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+            box-sizing: border-box;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #2d7d32;
+        }
+
+        .btn-continue {
+            width: 100%;
+            background: #2d7d32;
+            color: white;
+            border: none;
+            padding: 14px 16px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .btn-continue:hover:not(:disabled) {
+            background: #1b5e20;
+        }
+
+        .btn-continue:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .btn-continue.valid {
+            background: #4caf50 !important;
+        }
+
+        .modal-subtitle {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 24px;
+            text-align: center;
+            font-weight: normal;
+        }
+
+        .password-field {
+            position: relative;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            padding: 4px;
+            color: #666;
+        }
+
+        .forgot-password {
+            text-align: center;
+            margin-top: 16px;
+        }
+
+        .forgot-password a {
+            color: #2d7d32;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .forgot-password a:hover {
+            text-decoration: underline;
+        }
+
+        .divider {
+            text-align: center;
+            margin: 24px 0;
+            position: relative;
+            color: #999;
+            font-size: 14px;
+        }
+
+        .divider:before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: #eee;
+        }
+
+        .divider span {
+            background: white;
+            padding: 0 16px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .social-login {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 32px;
+        }
+
+        .btn-facebook,
+        .btn-google {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .btn-facebook {
+            background: #1877f2;
+            color: white;
+            border-color: #1877f2;
+        }
+
+        .btn-facebook:hover {
+            background: #166fe5;
+        }
+
+        .btn-google {
+            background: white;
+            color: #333;
+        }
+
+        .btn-google:hover {
+            background: #f8f9fa;
+        }
+
+        .social-icon {
+            font-size: 18px;
+        }
+
+        .privacy-notice {
+            margin-bottom: 24px;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .privacy-notice p {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .privacy-icon {
+            font-size: 16px;
+        }
+
+        .modal-footer-links {
+            border-top: 1px solid #eee;
+            padding-top: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .footer-link {
+            color: #666;
+            text-decoration: none;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 0;
+            transition: color 0.3s;
+        }
+
+        .footer-link:hover {
+            color: #2d7d32;
+        }
+
+        .link-icon {
+            font-size: 16px;
+        }
+
+        /* User Profile Dropdown */
+        .user-profile {
+            position: relative;
+        }
+
+        .profile-btn {
+            background: #e0e0e0;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .profile-btn:hover {
+            background: #d0d0d0;
+        }
+
+        .profile-avatar {
+            font-size: 20px;
+        }
+
+        .profile-dropdown {
+            position: absolute;
+            right: 0;
+            top: 100%;
+            width: 280px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+        }
+
+        .profile-dropdown.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .profile-avatar-large {
+            width: 50px;
+            height: 50px;
+            background: #e0e0e0;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-right: 12px;
+        }
+
+        .profile-info {
+            flex: 1;
+        }
+
+        .profile-name {
+            font-size: 16px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 4px;
+        }
+
+        .profile-joined {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .profile-menu {
+            padding: 8px 0;
+        }
+
+        .profile-menu-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            color: #333;
+            text-decoration: none;
+            font-size: 14px;
+            transition: background 0.3s;
+            position: relative;
+        }
+
+        .profile-menu-item:hover {
+            background: #f8f9fa;
+        }
+
+        .menu-icon {
+            font-size: 16px;
+            margin-right: 12px;
+            width: 20px;
+        }
+
+        .loyalty-count {
+            margin-left: auto;
+            font-size: 12px;
+            color: #ff9800;
+            font-weight: bold;
+        }
+
+        /* A/B Test Styles */
+        
+        /* Login Incentive Badge */
+        .login-badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #ff4757;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: bold;
+            white-space: nowrap;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .btn-primary.with-badge {
+            position: relative;
+        }
+
+        /* Restaurant Card CTA Buttons */
+        .restaurant-cta {
+            position: absolute;
+            bottom: 16px;
+            left: 16px;
+            right: 16px;
+            background: #2d7d32;
+            color: white;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+            transform: translateY(60px);
+            opacity: 0;
+        }
+
+        .restaurant-card:hover .restaurant-cta {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .restaurant-cta:hover {
+            background: #1b5e20;
+            transform: translateY(-2px);
+        }
+
+        .restaurant-cta.variant-b {
+            background: #1976d2;
+        }
+
+        .restaurant-cta.variant-b:hover {
+            background: #1565c0;
+        }
+
+        /* Adjust restaurant info padding when CTA present */
+        .restaurant-card.has-cta .restaurant-info {
+            padding-bottom: 60px;
+        }
+
+        /* Large restaurant card for featured section */
+        .featured-card {
+            background: linear-gradient(135deg, #1a237e, #3f51b5);
+            color: white;
+            border-radius: 16px;
+            padding: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .featured-card h3 {
+            font-size: 28px;
+            margin-bottom: 16px;
+        }
+
+        .featured-card p {
+            margin-bottom: 24px;
+            opacity: 0.9;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .hero-text h1 {
+                font-size: 36px;
+            }
+
+            .search-form {
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .search-input {
+                border-radius: 12px;
+            }
+
+            .festival-content {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+            }
+
+            .header-links {
+                display: none;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            /* Mobile Modal */
+            .modal-panel {
+                width: 100%;
+                transform: translateX(100%);
+            }
+
+            .modal-content {
+                padding: 40px 20px 20px;
+            }
+
+            .modal-close {
+                right: 16px;
+                top: 16px;
+            }
+        }
+    </style>
+
+    <!-- Amplitude Analytics SDK -->
+    <script src="https://cdn.amplitude.com/script/88085f6fbdb53fc09cc786331545d3b3.js"></script>
+    
+    <!-- Amplitude Experiment SDK -->
+    <script src="https://unpkg.com/@amplitude/experiment-js-client@1.15.5/dist/experiment.umd.js"></script>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <a href="#" class="logo">TheFork</a>
+                <nav class="header-links">
+                    <a href="#" class="header-link">REGISTER MY RESTAURANT</a>
+                    <a href="#" class="header-link">HELP</a>
+                    <a href="#" class="header-link">GET THE APP</a>
+                    <a href="#" class="btn-primary" id="login-btn">LOG IN</a>
+                    
+                    <!-- User Profile Dropdown (hidden initially) -->
+                    <div class="user-profile" id="user-profile" style="display: none;">
+                        <button class="profile-btn" id="profile-btn">
+                            <div class="profile-avatar">👤</div>
+                        </button>
+                        
+                        <div class="profile-dropdown" id="profile-dropdown">
+                            <div class="profile-header">
+                                <div class="profile-avatar-large">👤</div>
+                                <div class="profile-info">
+                                    <div class="profile-name">Giuliano G.</div>
+                                    <div class="profile-joined">Joined in 2025</div>
+                                </div>
+                            </div>
+                            
+                            <div class="profile-menu">
+                                <a href="#" class="profile-menu-item" id="bookings-link">
+                                    <span class="menu-icon">📋</span>
+                                    <span>Bookings</span>
+                                </a>
+                                <a href="#" class="profile-menu-item" id="favourites-link">
+                                    <span class="menu-icon">❤️</span>
+                                    <span>Favourites</span>
+                                </a>
+                                <a href="#" class="profile-menu-item" id="loyalty-link">
+                                    <span class="menu-icon">⭐</span>
+                                    <span>Loyalty points</span>
+                                    <span class="loyalty-count">0 Yums</span>
+                                </a>
+                                <a href="#" class="profile-menu-item" id="refer-friend-link">
+                                    <span class="menu-icon">👥</span>
+                                    <span>Refer a friend</span>
+                                </a>
+                                <a href="#" class="profile-menu-item" id="reviews-link">
+                                    <span class="menu-icon">⭐</span>
+                                    <span>Reviews</span>
+                                </a>
+                                <a href="#" class="profile-menu-item" id="personal-details-link">
+                                    <span class="menu-icon">👤</span>
+                                    <span>Personal details</span>
+                                </a>
+                                <a href="#" class="profile-menu-item" id="settings-link">
+                                    <span class="menu-icon">⚙️</span>
+                                    <span>Settings</span>
+                                </a>
+                                <a href="#" class="profile-menu-item" id="register-restaurant-profile-link">
+                                    <span class="menu-icon">🍽️</span>
+                                    <span>Register my restaurant</span>
+                                </a>
+                                <a href="#" class="profile-menu-item" id="help-profile-link">
+                                    <span class="menu-icon">❓</span>
+                                    <span>Help</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h1>Discover and book the best restaurants</h1>
+                    <form class="search-form">
+                        <input type="text" class="search-input" placeholder="📍 London" id="location-input">
+                        <input type="text" class="search-input" placeholder="Cuisine, restaurant name..." id="search-input">
+                        <button type="submit" class="search-btn" id="search-btn">SEARCH</button>
+                    </form>
+                </div>
+                <div class="hero-image">
+                    <img src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='300'><rect width='400' height='300' fill='%23ff9800'/><text x='50%' y='50%' text-anchor='middle' dy='.3em' fill='white' font-size='24'>🍝 Delicious Pasta</text></svg>" alt="Delicious Food">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Festival Banner -->
+    <div class="container">
+        <section class="festival-banner">
+            <div class="festival-content">
+                <div>
+                    <h2 class="festival-title">🍴 TheFork Festival</h2>
+                </div>
+                <div class="festival-offer">
+                    <button class="btn-primary" id="festival-book-btn">Book now</button>
+                    <div class="discount-badge">50% OFF</div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Our Best Offers -->
+    <section class="section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Our best offers</h2>
+            </div>
+            
+            <div class="restaurant-grid">
+                <div class="featured-card">
+                    <h3>Up to 50% off</h3>
+                    <p>Browse by deals and special offers</p>
+                    <a href="#" class="btn-secondary" id="see-full-list">SEE FULL LIST</a>
+                </div>
+                
+                <div class="restaurant-card" data-restaurant="rockwell-bistro">
+                    <div class="restaurant-image">
+                        <img src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='280' height='200'><rect width='280' height='200' fill='%23d32f2f'/><text x='50%' y='50%' text-anchor='middle' dy='.3em' fill='white' font-size='20'>🍷 Wine Bar</text></svg>" alt="Rockwell Bistro">
+                        <button class="favorite-btn">♡</button>
+                    </div>
+                    <div class="restaurant-info">
+                        <h3 class="restaurant-name">Rockwell Bistro & Wine Bar</h3>
+                        <div class="restaurant-details">
+                            <div class="rating">
+                                <span class="rating-score">9.5</span>
+                                <span class="rating-count">(70)</span>
+                            </div>
+                        </div>
+                        <div class="restaurant-meta">
+                            SW1A 2TS, London<br>
+                            <span class="cuisine-type">European</span> • ~£25
+                        </div>
+                        <div class="offers">
+                            <span class="offer-badge discount">Up to -50%</span>
+                            <span class="offer-badge yums">Yums x3</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="restaurant-card" data-restaurant="hakkasan">
+                    <div class="restaurant-image">
+                        <img src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='280' height='200'><rect width='280' height='200' fill='%23f44336'/><text x='50%' y='50%' text-anchor='middle' dy='.3em' fill='white' font-size='20'>🥟 Chinese</text></svg>" alt="Hakkasan">
+                        <button class="favorite-btn">♡</button>
+                        <span class="restaurant-badge">MICHELIN</span>
+                    </div>
+                    <div class="restaurant-info">
+                        <h3 class="restaurant-name">Hakkasan - Mayfair</h3>
+                        <div class="restaurant-details">
+                            <div class="rating">
+                                <span class="rating-score">9.2</span>
+                                <span class="rating-count">(724)</span>
+                            </div>
+                        </div>
+                        <div class="restaurant-meta">
+                            W1J 6QB, London<br>
+                            <span class="cuisine-type">Chinese</span> • ~£55
+                        </div>
+                        <div class="offers">
+                            <span class="offer-badge discount">Up to -50%</span>
+                            <span class="offer-badge yums">Yums x3</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="restaurant-card" data-restaurant="the-india">
+                    <div class="restaurant-image">
+                        <img src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='280' height='200'><rect width='280' height='200' fill='%23ff9800'/><text x='50%' y='50%' text-anchor='middle' dy='.3em' fill='white' font-size='20'>🍛 Indian</text></svg>" alt="The India">
+                        <button class="favorite-btn">♡</button>
+                    </div>
+                    <div class="restaurant-info">
+                        <h3 class="restaurant-name">The India - Fleet Street</h3>
+                        <div class="restaurant-details">
+                            <div class="rating">
+                                <span class="rating-score">9.1</span>
+                                <span class="rating-count">(417)</span>
+                            </div>
+                        </div>
+                        <div class="restaurant-meta">
+                            EC4A 2EJ, London<br>
+                            <span class="cuisine-type">Indian</span> • ~£30
+                        </div>
+                        <div class="offers">
+                            <span class="offer-badge discount">Up to -50%</span>
+                            <span class="offer-badge yums">Yums x3</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Top Picks for You -->
+    <section class="section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Top picks for you</h2>
+            </div>
+            
+            <div class="restaurant-grid">
+                <div class="restaurant-card" data-restaurant="kendal-street">
+                    <div class="restaurant-image">
+                        <img src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='280' height='200'><rect width='280' height='200' fill='%234caf50'/><text x='50%' y='50%' text-anchor='middle' dy='.3em' fill='white' font-size='16'>🍽️ Mediterranean</text></svg>" alt="Kendal Street Kitchen">
+                        <button class="favorite-btn">♡</button>
+                        <span class="restaurant-badge">TopPick</span>
+                    </div>
+                    <div class="restaurant-info">
+                        <h3 class="restaurant-name">Kendal Street Kitchen</h3>
+                        <div class="restaurant-details">
+                            <div class="rating">
+                                <span class="rating-score">9.6</span>
+                                <span class="rating-count">(1904)</span>
+                            </div>
+                        </div>
+                        <div class="restaurant-meta">
+                            W2 2AW, London<br>
+                            <span class="cuisine-type">Mediterranean</span> • ~£27
+                        </div>
+                        <div class="offers">
+                            <span class="offer-badge discount">Up to -50%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="restaurant-card" data-restaurant="maresco">
+                    <div class="restaurant-image">
+                        <img src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='280' height='200'><rect width='280' height='200' fill='%232196f3'/><text x='50%' y='50%' text-anchor='middle' dy='.3em' fill='white' font-size='20'>🥘 Spanish</text></svg>" alt="Maresco">
+                        <button class="favorite-btn">♡</button>
+                        <span class="restaurant-badge">TopPick</span>
+                    </div>
+                    <div class="restaurant-info">
+                        <h3 class="restaurant-name">Maresco</h3>
+                        <div class="restaurant-details">
+                            <div class="rating">
+                                <span class="rating-score">9.3</span>
+                                <span class="rating-count">(770)</span>
+                            </div>
+                        </div>
+                        <div class="restaurant-meta">
+                            W1F 8SF, London<br>
+                            <span class="cuisine-type">Spanish</span> • ~£40
+                        </div>
+                        <div class="offers">
+                            <span class="offer-badge discount">Up to -50%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="restaurant-card" data-restaurant="naroon-marylebone">
+                    <div class="restaurant-image">
+                        <img src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='280' height='200'><rect width='280' height='200' fill='%23795548'/><text x='50%' y='50%' text-anchor='middle' dy='.3em' fill='white' font-size='20'>🍖 Iranian</text></svg>" alt="Naroon Marylebone">
+                        <button class="favorite-btn">♡</button>
+                    </div>
+                    <div class="restaurant-info">
+                        <h3 class="restaurant-name">Naroon Marylebone</h3>
+                        <div class="restaurant-details">
+                            <div class="rating">
+                                <span class="rating-score">9.1</span>
+                                <span class="rating-count">(1224)</span>
+                            </div>
+                        </div>
+                        <div class="restaurant-meta">
+                            W1G 9UA, London<br>
+                            <span class="cuisine-type">Iranian</span> • ~£24
+                        </div>
+                        <div class="offers">
+                            <span class="offer-badge discount">Up to -50%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="restaurant-card" data-restaurant="the-grill-harrods">
+                    <div class="restaurant-image">
+                        <img src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='280' height='200'><rect width='280' height='200' fill='%238bc34a'/><text x='50%' y='50%' text-anchor='middle' dy='.3em' fill='white' font-size='20'>🥩 Grill</text></svg>" alt="The Grill at Harrods">
+                        <button class="favorite-btn">♡</button>
+                    </div>
+                    <div class="restaurant-info">
+                        <h3 class="restaurant-name">The Grill on Fifth at Harrods</h3>
+                        <div class="restaurant-details">
+                            <div class="rating">
+                                <span class="rating-score">9.2</span>
+                                <span class="rating-count">(264)</span>
+                            </div>
+                        </div>
+                        <div class="restaurant-meta">
+                            SW1X 7XL, London<br>
+                            <span class="cuisine-type">Grill</span> • ~£55
+                        </div>
+                        <div class="offers">
+                            <span class="offer-badge discount">Up to -50%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TheFork Recommends -->
+    <section class="section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">TheFork recommends</h2>
+            </div>
+            
+            <div class="recommendation-grid">
+                <div class="recommendation-card">
+                    <div class="recommendation-image" style="background: linear-gradient(45deg, #d32f2f, #f44336); display: flex; align-items: center; justify-content: center; color: white; font-size: 48px;">
+                        ⭐
+                    </div>
+                    <div class="recommendation-content">
+                        <h3 class="recommendation-title">MICHELIN Guide Selection</h3>
+                        <p class="recommendation-text">Carefully curated & highly coveted recommendations from the MICHELIN Guide</p>
+                        <a href="#" class="btn-secondary" id="michelin-view-btn">VIEW RESTAURANTS</a>
+                    </div>
+                </div>
+
+                <div class="recommendation-card">
+                    <div class="recommendation-image" style="background: linear-gradient(45deg, #795548, #8d6e63); display: flex; align-items: center; justify-content: center; color: white; font-size: 48px;">
+                        🍺
+                    </div>
+                    <div class="recommendation-content">
+                        <h3 class="recommendation-title">Pubs</h3>
+                        <p class="recommendation-text">Looking for an authentic pub with delicious food? In the mood for a Sunday roast? Check out our selection of pubs and gastropubs</p>
+                        <a href="#" class="btn-secondary" id="pubs-view-btn">VIEW RESTAURANTS</a>
+                    </div>
+                </div>
+
+                <div class="recommendation-card">
+                    <div class="recommendation-image" style="background: linear-gradient(45deg, #388e3c, #4caf50); display: flex; align-items: center; justify-content: center; color: white; font-size: 48px;">
+                        🍝
+                    </div>
+                    <div class="recommendation-content">
+                        <h3 class="recommendation-title">Italian Cuisine</h3>
+                        <p class="recommendation-text">Fan of pasta, arancini or a classic Margherita? Get a pizza the action.</p>
+                        <a href="#" class="btn-secondary" id="italian-view-btn">VIEW RESTAURANTS</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Most Booked of the Month -->
+    <section class="section">
+        <div class="container">
+            <div class="section-header">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <h2 class="section-title">Most booked of the month</h2>
+                    <a href="#" class="btn-secondary" id="see-all-btn">SEE ALL</a>
+                </div>
+            </div>
+            
+            <div class="restaurant-grid">
+                <div class="restaurant-card" data-restaurant="german-gymnasium">
+                    <div class="restaurant-image">
+                        <img src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='280' height='200'><rect width='280' height='200' fill='%23ff5722'/><text x='50%' y='50%' text-anchor='middle' dy='.3em' fill='white' font-size='18'>🥨 Austrian</text></svg>" alt="German Gymnasium">
+                        <button class="favorite-btn">♡</button>
+                    </div>
+                    <div class="restaurant-info">
+                        <h3 class="restaurant-name">German Gymnasium</h3>
+                        <div class="restaurant-details">
+                            <div class="rating">
+                                <span class="rating-score">8.4</span>
+                                <span class="rating-count">(1017)</span>
+                            </div>
+                        </div>
+                        <div class="restaurant-meta">
+                            N1C 4AG, London<br>
+                            <span class="cuisine-type">Austrian</span> • ~£18
+                        </div>
+                        <div class="offers">
+                            <span class="offer-badge yums">Yums x3</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="restaurant-card" data-restaurant="hawksmoor-seven">
+                    <div class="restaurant-image">
+                        <img src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='280' height='200'><rect width='280' height='200' fill='%233f51b5'/><text x='50%' y='50%' text-anchor='middle' dy='.3em' fill='white' font-size='16'>🥩 Steakhouse</text></svg>" alt="Hawksmoor Seven Dials">
+                        <button class="favorite-btn">♡</button>
+                    </div>
+                    <div class="restaurant-info">
+                        <h3 class="restaurant-name">Hawksmoor Seven Dials</h3>
+                        <div class="restaurant-details">
+                            <div class="rating">
+                                <span class="rating-score">9</span>
+                                <span class="rating-count">(258)</span>
+                            </div>
+                        </div>
+                        <div class="restaurant-meta">
+                            WC2H 9JG, London<br>
+                            <span class="cuisine-type">Steakhouse</span> • ~£35
+                        </div>
+                    </div>
+                </div>
+
+                <div class="restaurant-card" data-restaurant="the-india-monument">
+                    <div class="restaurant-image">
+                        <img src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='280' height='200'><rect width='280' height='200' fill='%23607d8b'/><text x='50%' y='50%' text-anchor='middle' dy='.3em' fill='white' font-size='20'>🍛 Indian</text></svg>" alt="The India Monument">
+                        <button class="favorite-btn">♡</button>
+                    </div>
+                    <div class="restaurant-info">
+                        <h3 class="restaurant-name">The India - Monument</h3>
+                        <div class="restaurant-details">
+                            <div class="rating">
+                                <span class="rating-score">9.1</span>
+                                <span class="rating-count">(103)</span>
+                            </div>
+                        </div>
+                        <div class="restaurant-meta">
+                            EC3R 8EE, London<br>
+                            <span class="cuisine-type">Indian</span> • ~£22
+                        </div>
+                        <div class="offers">
+                            <span class="offer-badge discount">Up to -50%</span>
+                            <span class="offer-badge yums">Yums x3</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Discover Top 100 Banner -->
+    <section class="section">
+        <div class="container">
+            <div class="featured-card">
+                <h2>Discover the Top 100 London</h2>
+                <a href="#" class="btn-secondary" style="color: white;" id="top-100-btn">SEE FULL LIST</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pick Your Plate -->
+    <section class="section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Pick your plate</h2>
+            </div>
+            
+            <div class="cuisine-grid">
+                <div class="cuisine-card" data-cuisine="european">
+                    <div class="cuisine-image">🍝</div>
+                    <div class="cuisine-name">European</div>
+                </div>
+                <div class="cuisine-card" data-cuisine="asian">
+                    <div class="cuisine-image">🍜</div>
+                    <div class="cuisine-name">Asian</div>
+                </div>
+                <div class="cuisine-card" data-cuisine="british">
+                    <div class="cuisine-image">🍺</div>
+                    <div class="cuisine-name">British</div>
+                </div>
+                <div class="cuisine-card" data-cuisine="italian">
+                    <div class="cuisine-image">🍕</div>
+                    <div class="cuisine-name">Italian</div>
+                </div>
+                <div class="cuisine-card" data-cuisine="indian">
+                    <div class="cuisine-image">🍛</div>
+                    <div class="cuisine-name">Indian</div>
+                </div>
+                <div class="cuisine-card" data-cuisine="mediterranean">
+                    <div class="cuisine-image">🫒</div>
+                    <div class="cuisine-name">Mediterranean</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- New Restaurants Section -->
+    <section class="section">
+        <div class="container">
+            <div class="restaurant-grid">
+                <div class="restaurant-card" data-restaurant="kin-restaurant">
+                    <div class="restaurant-image">
+                        <img src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='280' height='200'><rect width='280' height='200' fill='%234caf50'/><text x='50%' y='50%' text-anchor='middle' dy='.3em' fill='white' font-size='20'>🥗 Vegan</text></svg>" alt="Kin Restaurant">
+                        <button class="favorite-btn">♡</button>
+                        <span class="restaurant-badge">New</span>
+                    </div>
+                    <div class="restaurant-info">
+                        <h3 class="restaurant-name">Kin Restaurant</h3>
+                        <div class="restaurant-details">
+                            <div class="rating">
+                                <span class="rating-score">9.4</span>
+                                <span class="rating-count">(778)</span>
+                            </div>
+                        </div>
+                        <div class="restaurant-meta">
+                            W1W 6DS, London<br>
+                            <span class="cuisine-type">Vegan</span> • ~£25
+                        </div>
+                        <div class="offers">
+                            <span class="offer-badge discount">Up to -50%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="restaurant-card" data-restaurant="cr7-lounge">
+                    <div class="restaurant-image">
+                        <img src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='280' height='200'><rect width='280' height='200' fill='%232196f3'/><text x='50%' y='50%' text-anchor='middle' dy='.3em' fill='white' font-size='20'>🍸 Lounge</text></svg>" alt="CR7 Lounge">
+                        <button class="favorite-btn">♡</button>
+                        <span class="restaurant-badge">New</span>
+                    </div>
+                    <div class="restaurant-info">
+                        <h3 class="restaurant-name">CR7 Lounge</h3>
+                        <div class="restaurant-details">
+                            <div class="rating">
+                                <span class="rating-score">9.7</span>
+                                <span class="rating-count">(3)</span>
+                            </div>
+                        </div>
+                        <div class="restaurant-meta">
+                            CR7 6JB, London<br>
+                            <span class="cuisine-type">Indian</span> • ~£20
+                        </div>
+                    </div>
+                </div>
+
+                <div class="restaurant-card" data-restaurant="atlantic-sushi">
+                    <div class="restaurant-image">
+                        <img src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='280' height='200'><rect width='280' height='200' fill='%23f44336'/><text x='50%' y='50%' text-anchor='middle' dy='.3em' fill='white' font-size='20'>🍣 Sushi</text></svg>" alt="Atlantic Sushi">
+                        <button class="favorite-btn">♡</button>
+                        <span class="restaurant-badge">New</span>
+                    </div>
+                    <div class="restaurant-info">
+                        <h3 class="restaurant-name">Atlantic Sushi</h3>
+                        <div class="restaurant-details">
+                            <div class="rating">
+                                <span class="rating-score">9.1</span>
+                                <span class="rating-count">(10)</span>
+                            </div>
+                        </div>
+                        <div class="restaurant-meta">
+                            E1 2BP, London<br>
+                            <span class="cuisine-type">Japanese</span> • ~£19
+                        </div>
+                        <div class="offers">
+                            <span class="offer-badge discount">Up to -50%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="restaurant-card" data-restaurant="three-compadres">
+                    <div class="restaurant-image">
+                        <img src="data:image/svg+xml,<svg xmlns='http://www.w3.svg%20namespace='http://www.w3.org/2000/svg' width='280' height='200'><rect width='280' height='200' fill='%23ff9800'/><text x='50%' y='50%' text-anchor='middle' dy='.3em' fill='white' font-size='18'>🌮 Mexican</text></svg>" alt="Three Compadres">
+                        <button class="favorite-btn">♡</button>
+                        <span class="restaurant-badge">New</span>
+                    </div>
+                    <div class="restaurant-info">
+                        <h3 class="restaurant-name">Three Compadres</h3>
+                        <div class="restaurant-details">
+                            <div class="rating">
+                                <span class="rating-score">9.5</span>
+                                <span class="rating-count">(10)</span>
+                            </div>
+                        </div>
+                        <div class="restaurant-meta">
+                            SW17 0SN, London<br>
+                            <span class="cuisine-type">Mexican</span> • ~£20
+                        </div>
+                        <div class="offers">
+                            <span class="offer-badge discount">Up to -50%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How Does It Work -->
+    <section class="section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">How does it work?</h2>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🎯</div>
+                    <h3 class="feature-title">Exclusive benefits</h3>
+                    <p class="feature-text">Offers for many restaurants and lots of other benefits with our loyalty programme.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🏆</div>
+                    <h3 class="feature-title">Best choice</h3>
+                    <p class="feature-text">An unrivalled selection of restaurants for whatever you want.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">⭐</div>
+                    <h3 class="feature-title">User reviews</h3>
+                    <p class="feature-text">Recommendations and reviews from a powerful community.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">📱</div>
+                    <h3 class="feature-title">Easy booking</h3>
+                    <p class="feature-text">Instant, free, everywhere. 24/7</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Other Cities -->
+    <section class="section">
+        <div class="container">
+            <div class="section-header">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <h2 class="section-title">Other cities in United Kingdom</h2>
+                    <a href="#" class="btn-secondary" id="see-more-cities-btn">SEE MORE</a>
+                </div>
+            </div>
+            
+            <div class="city-grid">
+                <div class="city-card" data-city="london">
+                    <h3>London</h3>
+                </div>
+                <div class="city-card" data-city="manchester">
+                    <h3>Manchester</h3>
+                </div>
+                <div class="city-card" data-city="edinburgh">
+                    <h3>Edinburgh</h3>
+                </div>
+                <div class="city-card" data-city="birmingham">
+                    <h3>Birmingham</h3>
+                </div>
+                <div class="city-card" data-city="liverpool">
+                    <h3>Liverpool</h3>
+                </div>
+                <div class="city-card" data-city="leeds">
+                    <h3>Leeds</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Download our App</h3>
+                    <div class="app-downloads">
+                        <a href="#" class="app-download" id="app-store-btn">
+                            <span>📱</span>
+                            <div>
+                                <div>Download on the</div>
+                                <strong>App Store</strong>
+                            </div>
+                        </a>
+                        <a href="#" class="app-download" id="google-play-btn">
+                            <span>📱</span>
+                            <div>
+                                <div>GET IT ON</div>
+                                <strong>Google Play</strong>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px;">
+                        <div>
+                            <h3>Company</h3>
+                            <div class="footer-links">
+                                <a href="#" id="about-link">About</a>
+                                <a href="#" id="contact-link">Contact</a>
+                                <a href="#" id="restaurant-signup-link">Are you a restaurant?</a>
+                                <a href="#" id="faq-link">Frequently asked questions</a>
+                                <a href="#" id="hiring-link">We are hiring</a>
+                                <a href="#" id="michelin-partnership-link">MICHELIN Guide Partnership</a>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <h3>Legal</h3>
+                            <div class="footer-links">
+                                <a href="#" id="loyalty-link">Loyalty programme</a>
+                                <a href="#" id="terms-link">Terms of Use</a>
+                                <a href="#" id="privacy-link">Privacy and Cookies Statement</a>
+                                <a href="#" id="cookie-consent-link">Cookie consent</a>
+                                <a href="#" id="blog-link">Blog</a>
+                                <a href="#" id="restaurant-near-me-link">Restaurant near me</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <div class="social-links">
+                        <a href="#" class="social-link" id="instagram-link">📷</a>
+                        <a href="#" class="social-link" id="facebook-link">📘</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>© 2025 LA FOURCHETTE SAS - ALL RIGHTS RESERVED</p>
+                <p style="margin-top: 20px; font-size: 12px;">Promotional offers are subject to conditions displayed on the restaurant's page. Offers on alcoholic beverages are strictly booked for adults. Alcohol abuse is dangerous for your health. Drink with moderation.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Login Modal -->
+    <div id="login-modal" class="modal-overlay">
+        <div class="modal-panel">
+            <button class="modal-close" id="modal-close-btn">&times;</button>
+            
+            <div class="modal-content">
+                <div class="modal-logo">
+                    <div class="logo">TheFork</div>
+                </div>
+                
+                <div class="modal-form">
+                    <h2 class="modal-title">Please enter your email address</h2>
+                    
+                    <form id="email-login-form" class="login-form">
+                        <div class="form-group">
+                            <label for="email-input">Email address *</label>
+                            <input type="email" id="email-input" class="form-input" placeholder="Your email address" required>
+                        </div>
+                        <button type="submit" class="btn-continue" id="continue-btn" disabled>Continue</button>
+                    </form>
+                    
+                    <form id="password-login-form" class="login-form" style="display: none;">
+                        <div class="welcome-message">
+                            <h2 class="modal-title">Welcome GG,</h2>
+                            <p class="modal-subtitle">Please enter your password</p>
+                        </div>
+                        <div class="form-group">
+                            <label for="password-input">Password</label>
+                            <div class="password-field">
+                                <input type="password" id="password-input" class="form-input" placeholder="" required>
+                                <button type="button" class="password-toggle" id="password-toggle">👁️</button>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn-continue" id="password-continue-btn">CONTINUE</button>
+                        <div class="forgot-password">
+                            <a href="#" id="forgot-password-link">FORGOTTEN YOUR PASSWORD?</a>
+                        </div>
+                    </form>
+                    
+                    <div class="divider">
+                        <span>or</span>
+                    </div>
+                    
+                    <div class="social-login">
+                        <button class="btn-facebook" id="facebook-login-btn">
+                            <span class="social-icon">📘</span>
+                            Connect with Facebook
+                        </button>
+                        <button class="btn-google" id="google-login-btn">
+                            <span class="social-icon">🔍</span>
+                            Sign in with Google
+                        </button>
+                    </div>
+                    
+                    <div class="privacy-notice">
+                        <p><span class="privacy-icon">🔒</span> No publication without your authorisation</p>
+                        <p><span class="privacy-icon">⚡</span> It's a lot faster this way!</p>
+                    </div>
+                </div>
+                
+                <div class="modal-footer-links">
+                    <a href="#" class="footer-link" id="register-restaurant-link">
+                        <span class="link-icon">🍽️</span> Register my restaurant
+                    </a>
+                    <a href="#" class="footer-link" id="help-link">
+                        <span class="link-icon">❓</span> Help
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize Amplitude Analytics with specified settings
+        window.amplitude.add(window.sessionReplay.plugin({sampleRate: 1}));
+        window.amplitude.init('88085f6fbdb53fc09cc786331545d3b3', {
+            fetchRemoteConfig: true,
+            autocapture: {
+                attribution: true,
+                pageViews: true,
+                sessions: true,
+                fileDownload: false,
+                formInteractions: false,
+                elementInteractions: false
+            }
+        });
+
+        // Initialize Amplitude Experiment SDK
+        let experiment;
+        
+        (async function initializeExperiment() {
+            try {
+                experiment = Experiment.initializeWithAmplitudeAnalytics('client-HKLpMmExUwuQl5zgR8mmbegpFhna2xSE');
+                await experiment.fetch();
+                
+                // Run some example experiments
+                runExperiments();
+            } catch (error) {
+                console.error('Failed to initialize Amplitude Experiment:', error);
+            }
+        })();
+
+        function runExperiments() {
+            // Example: Hero Section A/B Test
+            const heroVariant = experiment.variant('hero_text_experiment');
+            if (heroVariant.value === 'variant_b') {
+                document.querySelector('.hero-text h1').textContent = 'Find and reserve amazing restaurants';
+            }
+
+            // Example: CTA Button Color Test
+            const ctaVariant = experiment.variant('cta_button_color');
+            if (ctaVariant.value === 'orange') {
+                const searchBtn = document.getElementById('search-btn');
+                searchBtn.style.background = '#ff9800';
+            }
+
+            // Example: Festival Banner Test
+            const festivalVariant = experiment.variant('festival_banner_display');
+            if (festivalVariant.value === 'hide') {
+                document.querySelector('.festival-banner').style.display = 'none';
+            }
+
+            // Example: Restaurant Card Layout Test
+            const layoutVariant = experiment.variant('restaurant_card_layout');
+            if (layoutVariant.value === 'compact') {
+                const cards = document.querySelectorAll('.restaurant-card .restaurant-info');
+                cards.forEach(card => {
+                    card.style.padding = '12px';
+                });
+            }
+
+            // Example: Login Modal A/B Test
+            const loginVariant = experiment.variant('login_modal_experiment');
+            if (loginVariant.value === 'simplified') {
+                // Hide social login options for simplified variant
+                document.querySelector('.divider').style.display = 'none';
+                document.querySelector('.social-login').style.display = 'none';
+                document.querySelector('.modal-title').textContent = 'Enter your email to continue';
+            }
+
+            // Example: Login Button Color Test
+            const loginButtonVariant = experiment.variant('login_button_color');
+            if (loginButtonVariant.value === 'orange') {
+                document.documentElement.style.setProperty('--continue-btn-color', '#ff9800');
+            }
+
+            // Example: Login Flow A/B Test
+            const loginFlowVariant = experiment.variant('login_flow_type');
+            if (loginFlowVariant.value === 'single_step') {
+                // Show password field immediately alongside email
+                const passwordGroup = document.createElement('div');
+                passwordGroup.className = 'form-group';
+                passwordGroup.innerHTML = `
+                    <label for="email-password-input">Password</label>
+                    <input type="password" id="email-password-input" class="form-input" placeholder="Your password" required>
+                `;
+                document.querySelector('#email-login-form').insertBefore(passwordGroup, document.getElementById('continue-btn'));
+                document.getElementById('continue-btn').textContent = 'LOG IN';
+            }
+
+            // Example: Social Login Position Test
+            const socialPositionVariant = experiment.variant('social_login_position');
+            if (socialPositionVariant.value === 'top') {
+                const socialLogin = document.querySelector('.social-login');
+                const divider = document.querySelector('.divider');
+                const emailForm = document.getElementById('email-login-form');
+                
+                emailForm.parentNode.insertBefore(socialLogin, emailForm);
+                emailForm.parentNode.insertBefore(divider, emailForm);
+                divider.querySelector('span').textContent = 'or use email';
+            }
+
+            // === MUTUALLY EXCLUSIVE GROUP TESTS ===
+            
+            // Test 1: Hero Value Proposition Test
+            const heroValuePropVariant = experiment.variant('hero-value-prop-test');
+            const heroTitle = document.querySelector('.hero-text h1');
+            if (heroValuePropVariant.value === 'variant_a') {
+                heroTitle.textContent = 'Find your perfect dining experience';
+                trackEvent('Hero Value Prop Viewed', { variant: 'find_perfect_experience' });
+            } else if (heroValuePropVariant.value === 'variant_b') {
+                heroTitle.textContent = 'Book top-rated restaurants instantly';
+                trackEvent('Hero Value Prop Viewed', { variant: 'book_instantly' });
+            } else {
+                trackEvent('Hero Value Prop Viewed', { variant: 'control' });
+            }
+
+            // Test 2: Login Incentive Test
+            const loginIncentiveVariant = experiment.variant('login-incentive-test');
+            const loginButton = document.getElementById('login-btn');
+            if (loginIncentiveVariant.value === 'variant_a') {
+                loginButton.innerHTML = 'LOG IN <span class="login-badge">Get 10% OFF</span>';
+                loginButton.classList.add('with-badge');
+                trackEvent('Login Incentive Viewed', { variant: 'discount_badge' });
+            } else if (loginIncentiveVariant.value === 'variant_b') {
+                loginButton.textContent = 'JOIN FREE - Exclusive Deals';
+                trackEvent('Login Incentive Viewed', { variant: 'join_free_deals' });
+            } else {
+                trackEvent('Login Incentive Viewed', { variant: 'control' });
+            }
+
+            // Test 3: Restaurant Card CTA Test
+            const restaurantCtaVariant = experiment.variant('restaurant-cta-test');
+            const restaurantCards = document.querySelectorAll('.restaurant-card[data-restaurant]');
+            
+            if (restaurantCtaVariant.value === 'variant_a') {
+                restaurantCards.forEach(card => {
+                    card.classList.add('has-cta');
+                    const ctaButton = document.createElement('button');
+                    ctaButton.className = 'restaurant-cta';
+                    ctaButton.textContent = 'Book Now';
+                    ctaButton.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        const restaurantName = card.getAttribute('data-restaurant');
+                        // Track both CTA-specific and unified card click events
+                        trackEvent('Restaurant CTA Clicked', { 
+                            variant: 'book_now',
+                            restaurant: restaurantName 
+                        });
+                        trackEvent('Restaurant Card Clicked', {
+                            restaurant_name: restaurantName,
+                            click_type: 'cta_button',
+                            cta_variant: 'book_now'
+                        });
+                    });
+                    card.appendChild(ctaButton);
+                });
+                trackEvent('Restaurant CTA Viewed', { variant: 'book_now' });
+                
+            } else if (restaurantCtaVariant.value === 'variant_b') {
+                restaurantCards.forEach(card => {
+                    card.classList.add('has-cta');
+                    const ctaButton = document.createElement('button');
+                    ctaButton.className = 'restaurant-cta variant-b';
+                    ctaButton.textContent = 'View Menu & Book';
+                    ctaButton.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        const restaurantName = card.getAttribute('data-restaurant');
+                        // Track both CTA-specific and unified card click events
+                        trackEvent('Restaurant CTA Clicked', { 
+                            variant: 'view_menu_book',
+                            restaurant: restaurantName 
+                        });
+                        trackEvent('Restaurant Card Clicked', {
+                            restaurant_name: restaurantName,
+                            click_type: 'cta_button',
+                            cta_variant: 'view_menu_book'
+                        });
+                    });
+                    card.appendChild(ctaButton);
+                });
+                trackEvent('Restaurant CTA Viewed', { variant: 'view_menu_book' });
+            } else {
+                trackEvent('Restaurant CTA Viewed', { variant: 'control' });
+            }
+        }
+
+        // Track user interactions
+        function trackEvent(eventName, properties = {}) {
+            amplitude.track(eventName, properties);
+        }
+
+        // Simple hash function for email
+        function hashEmail(email) {
+            let hash = 0;
+            for (let i = 0; i < email.length; i++) {
+                const char = email.charCodeAt(i);
+                hash = ((hash << 5) - hash) + char;
+                hash = hash & hash; // Convert to 32-bit integer
+            }
+            return Math.abs(hash).toString();
+        }
+
+        // Modal functionality
+        const loginModal = document.getElementById('login-modal');
+        const loginBtn = document.getElementById('login-btn');
+        const closeBtn = document.getElementById('modal-close-btn');
+        
+        let currentEmail = '';
+        let isLoggedIn = false;
+
+        function openModal() {
+            loginModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            trackEvent('Login Modal Opened');
+        }
+
+        function closeModal() {
+            loginModal.classList.remove('active');
+            document.body.style.overflow = '';
+            trackEvent('Login Modal Closed');
+            
+            // Reset forms when closing
+            resetModalForms();
+        }
+
+        function resetModalForms() {
+            // Reset email form
+            document.getElementById('email-login-form').style.display = 'block';
+            document.querySelector('.divider').style.display = 'block';
+            document.querySelector('.social-login').style.display = 'block';
+            
+            // Reset password form
+            document.getElementById('password-login-form').style.display = 'none';
+            
+            // Clear inputs
+            document.getElementById('email-input').value = '';
+            document.getElementById('password-input').value = '';
+            
+            // Reset button state
+            document.getElementById('continue-btn').disabled = true;
+            document.getElementById('continue-btn').classList.remove('valid');
+            
+            // Reset modal title
+            document.querySelector('#email-login-form').parentNode.querySelector('h2').textContent = 'Please enter your email address';
+        }
+
+        function completeLogin() {
+            // Hide modal
+            closeModal();
+            
+            // Set logged in state
+            isLoggedIn = true;
+            
+            // Hide login button, show user profile
+            document.getElementById('login-btn').style.display = 'none';
+            document.getElementById('user-profile').style.display = 'block';
+            
+            // Update profile with user initials
+            const initials = currentEmail.split('@')[0].substring(0, 2).toUpperCase();
+            document.querySelector('.profile-name').textContent = `${initials.charAt(0)}${initials.charAt(1) || ''}iuliano G.`;
+            
+            // Track successful login
+            trackEvent('Login Completed', {
+                email: currentEmail,
+                login_method: 'email_password'
+            });
+        }
+
+        // Event listeners for tracking user interactions
+        document.addEventListener('DOMContentLoaded', function() {
+            // Login modal functionality with A/B test context
+            loginBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Get current login incentive variant for context
+                let loginVariant = 'control';
+                if (experiment) {
+                    const loginIncentiveVariant = experiment.variant('login-incentive-test');
+                    if (loginIncentiveVariant.value === 'variant_a') {
+                        loginVariant = 'discount_badge';
+                    } else if (loginIncentiveVariant.value === 'variant_b') {
+                        loginVariant = 'join_free_deals';
+                    }
+                }
+                
+                trackEvent('Login Button Clicked', {
+                    login_incentive_variant: loginVariant
+                });
+                
+                openModal();
+            });
+
+            closeBtn.addEventListener('click', closeModal);
+
+            // Close modal when clicking outside
+            loginModal.addEventListener('click', function(e) {
+                if (e.target === loginModal) {
+                    closeModal();
+                }
+            });
+
+            // Close modal with Escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && loginModal.classList.contains('active')) {
+                    closeModal();
+                }
+            });
+
+            // Email validation and button state
+            const emailInput = document.getElementById('email-input');
+            const continueBtn = document.getElementById('continue-btn');
+            
+            emailInput.addEventListener('input', function() {
+                const email = this.value;
+                const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+                
+                if (isValidEmail) {
+                    continueBtn.disabled = false;
+                    continueBtn.classList.add('valid');
+                } else {
+                    continueBtn.disabled = true;
+                    continueBtn.classList.remove('valid');
+                }
+            });
+
+            // Email form submission -> Password step
+            document.getElementById('email-login-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                currentEmail = document.getElementById('email-input').value;
+                
+                trackEvent('Email Entered', {
+                    email: currentEmail
+                });
+                
+                // Set Amplitude user ID with hashed email
+                const hashedUserId = hashEmail(currentEmail);
+                amplitude.setUserId(hashedUserId);
+                amplitude.identify(new amplitude.Identify().set('email_hash', hashedUserId));
+                
+                // Hide email form, show password form
+                document.getElementById('email-login-form').style.display = 'none';
+                document.querySelector('.divider').style.display = 'none';
+                document.querySelector('.social-login').style.display = 'none';
+                document.getElementById('password-login-form').style.display = 'block';
+                
+                // Update welcome message with extracted initials
+                const initials = currentEmail.split('@')[0].substring(0, 2).toUpperCase();
+                document.querySelector('#password-login-form .modal-title').textContent = `Welcome ${initials},`;
+            });
+
+            // Password form submission -> Login complete
+            document.getElementById('password-login-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const password = document.getElementById('password-input').value;
+                
+                trackEvent('Password Entered', {
+                    email: currentEmail
+                });
+                
+                // Complete login
+                completeLogin();
+            });
+
+            // Password toggle functionality
+            document.getElementById('password-toggle').addEventListener('click', function() {
+                const passwordInput = document.getElementById('password-input');
+                if (passwordInput.type === 'password') {
+                    passwordInput.type = 'text';
+                    this.textContent = '🙈';
+                } else {
+                    passwordInput.type = 'password';
+                    this.textContent = '👁️';
+                }
+                
+                trackEvent('Password Visibility Toggled');
+            });
+
+            // Forgot password link
+            document.getElementById('forgot-password-link').addEventListener('click', function(e) {
+                e.preventDefault();
+                trackEvent('Forgot Password Clicked');
+                alert('Forgot password functionality would be implemented here');
+            });
+
+            // Social login buttons
+            document.getElementById('facebook-login-btn').addEventListener('click', function() {
+                trackEvent('Social Login Clicked', {
+                    provider: 'facebook'
+                });
+                // Facebook login implementation would go here
+                alert('Facebook login would be implemented here');
+            });
+
+            document.getElementById('google-login-btn').addEventListener('click', function() {
+                trackEvent('Social Login Clicked', {
+                    provider: 'google'
+                });
+                // Google login implementation would go here
+                alert('Google login would be implemented here');
+            });
+
+            // Modal footer links
+            document.getElementById('register-restaurant-link').addEventListener('click', function(e) {
+                e.preventDefault();
+                trackEvent('Modal Link Clicked', {
+                    link: 'register_restaurant'
+                });
+            });
+
+            document.getElementById('help-link').addEventListener('click', function(e) {
+                e.preventDefault();
+                trackEvent('Modal Link Clicked', {
+                    link: 'help'
+                });
+            });
+
+            // Profile dropdown functionality
+            const profileBtn = document.getElementById('profile-btn');
+            const profileDropdown = document.getElementById('profile-dropdown');
+            
+            profileBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                profileDropdown.classList.toggle('active');
+                trackEvent('Profile Dropdown Clicked', {
+                    action: profileDropdown.classList.contains('active') ? 'opened' : 'closed'
+                });
+            });
+
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function() {
+                profileDropdown.classList.remove('active');
+            });
+
+            // Profile menu items
+            document.getElementById('bookings-link').addEventListener('click', function(e) {
+                e.preventDefault();
+                trackEvent('Profile Menu Clicked', { menu_item: 'bookings' });
+            });
+
+            document.getElementById('favourites-link').addEventListener('click', function(e) {
+                e.preventDefault();
+                trackEvent('Profile Menu Clicked', { menu_item: 'favourites' });
+            });
+
+            document.getElementById('loyalty-link').addEventListener('click', function(e) {
+                e.preventDefault();
+                trackEvent('Profile Menu Clicked', { menu_item: 'loyalty_points' });
+            });
+
+            document.getElementById('refer-friend-link').addEventListener('click', function(e) {
+                e.preventDefault();
+                trackEvent('Profile Menu Clicked', { menu_item: 'refer_friend' });
+            });
+
+            document.getElementById('reviews-link').addEventListener('click', function(e) {
+                e.preventDefault();
+                trackEvent('Profile Menu Clicked', { menu_item: 'reviews' });
+            });
+
+            document.getElementById('personal-details-link').addEventListener('click', function(e) {
+                e.preventDefault();
+                trackEvent('Profile Menu Clicked', { menu_item: 'personal_details' });
+            });
+
+            document.getElementById('settings-link').addEventListener('click', function(e) {
+                e.preventDefault();
+                trackEvent('Profile Menu Clicked', { menu_item: 'settings' });
+            });
+
+            document.getElementById('register-restaurant-profile-link').addEventListener('click', function(e) {
+                e.preventDefault();
+                trackEvent('Profile Menu Clicked', { menu_item: 'register_restaurant' });
+            });
+
+            document.getElementById('help-profile-link').addEventListener('click', function(e) {
+                e.preventDefault();
+                trackEvent('Profile Menu Clicked', { menu_item: 'help' });
+            });
+
+            // Search functionality with A/B test context
+            document.getElementById('search-btn').addEventListener('click', function(e) {
+                e.preventDefault();
+                const location = document.getElementById('location-input').value;
+                const query = document.getElementById('search-input').value;
+                
+                // Get current hero variant for context
+                let heroVariant = 'control';
+                if (experiment) {
+                    const heroValuePropVariant = experiment.variant('hero-value-prop-test');
+                    if (heroValuePropVariant.value === 'variant_a') {
+                        heroVariant = 'find_perfect_experience';
+                    } else if (heroValuePropVariant.value === 'variant_b') {
+                        heroVariant = 'book_instantly';
+                    }
+                }
+                
+                trackEvent('Search Started', {
+                    location: location,
+                    query: query,
+                    hero_variant: heroVariant
+                });
+            });
+
+            // Festival banner interaction
+            document.getElementById('festival-book-btn').addEventListener('click', function() {
+                trackEvent('Festival Banner Clicked', {
+                    action: 'book_now'
+                });
+            });
+
+            // Restaurant card clicks
+            document.querySelectorAll('.restaurant-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    const restaurantName = this.getAttribute('data-restaurant');
+                    trackEvent('Restaurant Card Clicked', {
+                        restaurant_name: restaurantName,
+                        click_type: 'card_area',
+                        cta_variant: 'control'
+                    });
+                });
+            });
+
+            // Cuisine category clicks
+            document.querySelectorAll('.cuisine-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    const cuisine = this.getAttribute('data-cuisine');
+                    trackEvent('Cuisine Category Clicked', {
+                        cuisine_type: cuisine
+                    });
+                });
+            });
+
+            // City selection clicks
+            document.querySelectorAll('.city-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    const city = this.getAttribute('data-city');
+                    trackEvent('City Selected', {
+                        city: city
+                    });
+                });
+            });
+
+            // Favorite button clicks
+            document.querySelectorAll('.favorite-btn').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    this.style.color = this.style.color === 'red' ? '' : 'red';
+                    this.textContent = this.textContent === '♡' ? '❤️' : '♡';
+                    
+                    trackEvent('Restaurant Favorited', {
+                        action: this.textContent === '❤️' ? 'add' : 'remove'
+                    });
+                });
+            });
+
+            // Navigation link clicks
+            document.querySelectorAll('.header-link, .btn-secondary').forEach(link => {
+                link.addEventListener('click', function() {
+                    const linkText = this.textContent.trim();
+                    trackEvent('Navigation Link Clicked', {
+                        link_text: linkText,
+                        link_id: this.id
+                    });
+                });
+            });
+
+            // Footer link clicks
+            document.querySelectorAll('.footer-links a, .app-download, .social-link').forEach(link => {
+                link.addEventListener('click', function() {
+                    trackEvent('Footer Link Clicked', {
+                        link_id: this.id,
+                        link_text: this.textContent.trim()
+                    });
+                });
+            });
+
+            // Scroll depth tracking
+            let maxScroll = 0;
+            window.addEventListener('scroll', function() {
+                const scrollPercent = Math.round(
+                    (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100
+                );
+                
+                if (scrollPercent > maxScroll && scrollPercent % 25 === 0) {
+                    maxScroll = scrollPercent;
+                    trackEvent('Page Scroll', {
+                        scroll_depth: scrollPercent
+                    });
+                }
+            });
+        });
+
+        // Experiment exposure tracking helper
+        function trackExperimentExposure(flagKey) {
+            if (experiment) {
+                experiment.exposure(flagKey);
+            }
+        }
+
+        // Note: Automatic exposure tracking is enabled via initializeWithAmplitudeAnalytics()
+        // The variant() calls above automatically track $exposure events per Amplitude documentation
+        // Manual exposure tracking is only needed for specific use cases or delayed exposures
+        
+        // Optional: Manual exposure tracking only if needed for delayed/conditional exposures
+        // setTimeout(() => {
+        //     // Only use manual tracking if automatic tracking via variant() calls is insufficient
+        //     trackExperimentExposure('hero-value-prop-test');
+        //     trackExperimentExposure('login-incentive-test'); 
+        //     trackExperimentExposure('restaurant-cta-test');
+        // }, 2000);
+    </script>
+</body>
+</html>
