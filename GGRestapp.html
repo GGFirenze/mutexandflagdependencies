@@ -1159,6 +1159,9 @@
 
     <!-- Amplitude Analytics SDK -->
     <script src="https://cdn.amplitude.com/script/88085f6fbdb53fc09cc786331545d3b3.js"></script>
+
+    <!-- Amplitude Guides & Surveys SDK -->
+    <script src="https://cdn.amplitude.com/script/88085f6fbdb53fc09cc786331545d3b3.engagement.js"></script>
     
     <!-- Amplitude Experiment SDK -->
     <script src="https://unpkg.com/@amplitude/experiment-js-client@1.15.5/dist/experiment.umd.js"></script>
@@ -1946,6 +1949,7 @@
     <script>
         // Initialize Amplitude Analytics with specified settings
         window.amplitude.add(window.sessionReplay.plugin({sampleRate: 1}));
+        window.amplitude.add(window.engagement.plugin());
         window.amplitude.init('88085f6fbdb53fc09cc786331545d3b3', {
             fetchRemoteConfig: true,
             autocapture: {
