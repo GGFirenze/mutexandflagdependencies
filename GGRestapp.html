@@ -1949,7 +1949,16 @@
     <script>
         // Initialize Amplitude Analytics with specified settings
         window.amplitude.add(window.sessionReplay.plugin({sampleRate: 1}));
-        window.amplitude.add(window.engagement.plugin());
+
+        // Detect the user's locale for Guides & Surveys localization
+        // Returns a value like "en", "en-US", "fr-FR", etc.
+        function getLocale() {
+            return navigator.language || navigator.userLanguage || 'en-US';
+        }
+        const currentLocale = getLocale();
+
+        // Initialize the Guides & Surveys (engagement) plugin with the user's locale
+        window.amplitude.add(window.engagement.plugin({ locale: currentLocale }));
         window.amplitude.init('88085f6fbdb53fc09cc786331545d3b3', {
             fetchRemoteConfig: true,
             autocapture: {
